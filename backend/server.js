@@ -10,6 +10,7 @@ import authRouter from "./routes/auth.js";      // Login & Signup
 import overpassRouter from "./routes/overpass.js"; // Tourist places
 import airportsRouter from "./routes/airports.js"; // Airports
 import itinerariesRouter from './routes/itineraries.js';
+import userRoutes from './routes/user.js'; 
 
 // ✅ 2. Configure environment variables
 dotenv.config();
@@ -21,7 +22,7 @@ const PORT = process.env.PORT || 5000;
 // ✅ 4. Middleware
 app.use(cors());
 app.use(express.json());
-
+app.use('/api/user', userRoutes);  
 
 // ✅ 5. Mount Routes
 // Auth Routes (Login/Signup)
