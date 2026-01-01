@@ -20,30 +20,40 @@ export default function Login() {
   }, []);
 
   const handleLogin = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const res = await fetch("http://localhost:5000/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+  const res = await fetch("http://localhost:5000/api/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
 
-    const data = await res.json();
-    setMsg(data.message);
+  const data = await res.json();
+  setMsg(data.message);
 
-    if (res.status === 200) {
-      setTimeout(() => navigate("/main"), 1500);
-    }
-  };
+  if (res.status === 200) {
+    localStorage.setItem('token', data.token);  // ✅ SAVE TOKEN
+    console.log('✅ Token saved!');
+    setTimeout(() => navigate("/main"), 1500);      // ✅ MAIN PAGE
+  }
+};
 
   return (
     <div >
       <header className="site-header">
     <div className="logo">
-      <div className="brand">EcoTravel BLR</div>
+      <div className="brand">EcoTravel</div>
       <div className="tagline">Sustainable Travel Planner</div>
     </div>
+    
         <div className="auth">
+          <button
+    className="btn btn-primary"
+    onClick={() => navigate('/')}
+
+  >
+    Home
+  </button>
       <button className="btn btn-primary" onClick={() => navigate("/signup")}>Signup</button>
     </div>
   </header>
@@ -83,6 +93,13 @@ export default function Login() {
         </p>
       </div>
       </div>
+      <footer className="footer">
+  <div className="footer-content">
+    <p>&copy; 2026 EcoTravel. All rights reserved.</p>
+    <p>Developed by: Nandhana • Monisha • Sindhuja</p>
+  </div>
+</footer>
+
     </div>
   );
 }

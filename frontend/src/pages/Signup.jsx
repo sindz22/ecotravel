@@ -76,10 +76,17 @@ export default function Signup() {
     <div>
         <header className="site-header">
     <div className="logo">
-      <div className="brand">EcoTravel BLR</div>
+      <div className="brand">EcoTravel</div>
       <div className="tagline">Sustainable Travel Planner</div>
     </div>
         <div className="auth">
+          <button
+    className="btn btn-primary"
+    onClick={() => navigate('/')}
+
+  >
+    Home
+  </button>
       <button className="btn btn-primary" onClick={() => navigate("/login")}>Login</button>
     </div>
   </header>
@@ -99,8 +106,10 @@ export default function Signup() {
         <label>Confirm Password</label>
         <input type="password" placeholder="Re-enter password" name="confirmPassword" value={form.confirmPassword} onChange={handleChange}/>
 
-        <label>Date of Birth</label>
-        <input type="date" name="dob" value={form.dob} onChange={handleChange}/>
+<div className="form-group">
+  <label>Date of Birth</label>
+  <input type="date" name="dob" value={form.dob} onChange={handleChange}/>
+</div>
 
         <h3>Travel Preferences</h3>
         <div className="check-group">
@@ -208,6 +217,13 @@ export default function Signup() {
         <p>Already have an account? <a href="/login">Login</a></p>
       </div>
     </div>
+    <footer className="footer">
+  <div className="footer-content">
+    <p>&copy; 2026 EcoTravel. All rights reserved.</p>
+    <p>Developed by: Nandhana • Monisha • Sindhuja</p>
+  </div>
+</footer>
+
     </div>
   );
 }

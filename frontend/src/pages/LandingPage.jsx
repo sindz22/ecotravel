@@ -2,25 +2,32 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./LandingPage.css";
 
+
 export default function LandingPage() {
   const navigate = useNavigate();
+
+  const handleLogoClick = () => {
+  const token = localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
+  if (token) {
+    window.location.href = '/main'; // or use navigate('/main') if using React Router
+  } else {
+    window.location.href = '/';
+  }
+};
 
   return (
     <div className="landing-page">
 
       {/* ===================== NAVBAR ===================== */}
       <header className="site-header">
+        
         <div className="logo">
-          <div className="brand">EcoTravel BLR</div>
+          
+          <div className="brand">EcoTravel</div>
           <div className="tagline">Sustainable Travel Planner</div>
         </div>
 
-        <nav className="main-nav">
-          <a className="nav-item active">Home</a>
-          <a className="nav-item">Explore</a>
-          <a className="nav-item">About Us</a>
-          <a className="nav-item">Contact Us</a>
-        </nav>
+        
 
         <div className="auth">
           <button className="btn btn-primary" onClick={() => navigate("/login")}>
@@ -39,26 +46,9 @@ export default function LandingPage() {
         {/* LEFT SIDE */}
         <div className="hero-left">
 
-          {/* DOTTED PLANE PATHS */}
-          <svg className="plane-paths" viewBox="0 0 800 300">
-            <path d="M50 180 C200 60, 400 40, 650 140" className="path" />
-            <path d="M80 140 C260 20, 480 70, 720 110" className="path" />
-            <path d="M120 210 C300 100, 520 140, 760 160" className="path" />
-          </svg>
-
-          {/* PLANES */}
-          <img src="/plane.png" className="plane p1" alt="" />
-          <img src="/plane.png" className="plane p2" alt="" />
-          <img src="/plane.png" className="plane p3" alt="" />
-
-          {/* BACKGROUND BLOBS */}
-          <div className="blob-layer layer1"></div>
-          <div className="blob-layer layer2"></div>
-
-          {/* MAIN IMAGE BLOB */}
-          <div className="blob-mask">
-            <img src="/blr.jpg" className="hero-img" alt="" />
-          </div>
+        <div className="hero-left">
+          <img src="/fimg.png" className="hero-image" alt="EcoTravel Hero" />
+        </div>
         </div>
 
         {/* RIGHT SIDE */}
@@ -66,7 +56,7 @@ export default function LandingPage() {
           <h6 className="eyebrow">TRAVEL GREEN. TRAVEL SMART.</h6>
 
           <h1 className="title">
-            Explore Bangalore <br />
+            Explore Travel <br />
             The Eco-Friendly Way.
           </h1>
 
@@ -75,9 +65,16 @@ export default function LandingPage() {
             and explore Bangalore responsibly.
           </p>
 
-          <button className="btn btn-primary cta">Plan Your Eco Trip</button>
+          <button className="btn btn-primary cta" onClick={() => navigate("/login")}>Plan Your Eco Trip</button>
         </div>
       </main>
+      <footer className="footer">
+  <div className="footer-content">
+    <p>&copy; 2026 EcoTravel. All rights reserved.</p>
+    <p>Developed by: Nandhana • Monisha • Sindhuja</p>
+  </div>
+</footer>
+
 
     </div>
   );

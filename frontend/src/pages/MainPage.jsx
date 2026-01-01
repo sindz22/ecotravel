@@ -1,16 +1,92 @@
-import React from "react";
+import React, { useState,useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LandingPage.css";
+import "./MainPage.css";
+
 
 export default function MainPage() {
   const navigate = useNavigate();
 
+  const [location, setLocation] = useState("");
+  const [coords, setCoords] = useState(null);
+  const [error, setError] = useState("");
+const [activeSection, setActiveSection] = useState('home');
+
+  const [selectedMode, setSelectedMode] = useState(null);
+
+  const aboutRef = useRef(null);
+  const modesRef = useRef(null);
+  const contactRef = useRef(null);
+
+  const modeDetails = {
+  walking: {
+    title: "🚶‍♂️ Walking",
+    text:
+      "Walking is the most eco-friendly mode of travel. It produces zero carbon emissions, improves health, and helps reduce traffic congestion."
+  },
+  cycling: {
+    title: "🚲 Cycling",
+    text:
+      "Cycling is a sustainable and efficient travel mode. It reduces pollution, saves fuel, and is ideal for short urban distances."
+  },
+  bus: {
+    title: "🚌 Public Transport",
+    text:
+      "Public transport reduces the number of vehicles on roads, lowering carbon emissions per person and making cities more sustainable."
+  },
+  ev: {
+    title: "⚡ Electric Vehicles",
+    text:
+      "Electric vehicles produce fewer emissions compared to petrol vehicles and help reduce air pollution when powered by clean energy."
+  }
+};
+
+  const getCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      setError("Geolocation not supported by browser");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setCoords({ latitude, longitude });
+        setLocation(`Lat: ${latitude.toFixed(4)}, Lng: ${longitude.toFixed(4)}`);
+        setError("");
+      },
+      () => {
+        setError("Location permission denied");
+      }
+    );
+  };
 const handleLogout = () => {
     localStorage.removeItem("token");     // remove login token
-    localStorage.setItem("flash", "Logged out successfully");
 
-    navigate("/login");                   // redirect to login
+    navigate("/");                   // redirect to login
   };
+
+  const scrollToSection = (section) => {
+  setActiveSection(section);
+  
+  const refs = {
+    home: null,
+    explore: modesRef,    // ✅ Explore -> modesRef (Travel Modes section)
+    about: aboutRef,      // ✅ About -> aboutRef  
+    contact: contactRef   // ✅ Contact -> contactRef
+  };
+  
+  const targetRef = refs[section];
+  
+  if (targetRef?.current) {
+    targetRef.current.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'start'
+    });
+  } else if (section === 'home') {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+};
+
 
   return (
     <div className="Main-page">
@@ -18,16 +94,38 @@ const handleLogout = () => {
       {/* ===================== NAVBAR ===================== */}
       <header className="site-header">
         <div className="logo">
-          <div className="brand">EcoTravel BLR</div>
+          
+          <div className="brand">EcoTravel</div>
           <div className="tagline">Sustainable Travel Planner</div>
         </div>
 
         <nav className="main-nav">
-          <a className="nav-item active">Home</a>
-          <a className="nav-item">Explore</a>
-          <a className="nav-item">About Us</a>
-          <a className="nav-item">Contact Us</a>
-        </nav>
+  <a 
+    className={`nav-item ${activeSection === 'home' ? 'active' : ''}`} 
+    onClick={() => scrollToSection('home')}
+  >
+    Home
+  </a>
+  <a 
+    className={`nav-item ${activeSection === 'explore' ? 'active' : ''}`} 
+    onClick={() => scrollToSection('explore')}
+  >
+    Explore
+  </a>
+  <a 
+    className={`nav-item ${activeSection === 'about' ? 'active' : ''}`} 
+    onClick={() => scrollToSection('about')}
+  >
+    About Us
+  </a>
+  <a 
+    className={`nav-item ${activeSection === 'contact' ? 'active' : ''}`} 
+    onClick={() => scrollToSection('contact')}
+  >
+    Contact
+  </a>
+</nav>
+
          <div className="auth">
           <button 
             className="btn btn-primary" 
@@ -44,26 +142,9 @@ const handleLogout = () => {
         {/* LEFT SIDE */}
         <div className="hero-left">
 
-          {/* DOTTED PLANE PATHS */}
-          <svg className="plane-paths" viewBox="0 0 800 300">
-            <path d="M50 180 C200 60, 400 40, 650 140" className="path" />
-            <path d="M80 140 C260 20, 480 70, 720 110" className="path" />
-            <path d="M120 210 C300 100, 520 140, 760 160" className="path" />
-          </svg>
-
-          {/* PLANES */}
-          <img src="/plane.png" className="plane p1" alt="" />
-          <img src="/plane.png" className="plane p2" alt="" />
-          <img src="/plane.png" className="plane p3" alt="" />
-
-          {/* BACKGROUND BLOBS */}
-          <div className="blob-layer layer1"></div>
-          <div className="blob-layer layer2"></div>
-
-          {/* MAIN IMAGE BLOB */}
-          <div className="blob-mask">
-            <img src="/blr.jpg" className="hero-img" alt="" />
-          </div>
+        <div className="hero-left">
+          <img src="/fimg.png" className="hero-image" alt="EcoTravel Hero" />
+        </div>
         </div>
 
         {/* RIGHT SIDE */}
@@ -71,7 +152,7 @@ const handleLogout = () => {
           <h6 className="eyebrow">TRAVEL GREEN. TRAVEL SMART.</h6>
 
           <h1 className="title">
-            Explore Bangalore <br />
+            Explore  <br />
             The Eco-Friendly Way.
           </h1>
 
@@ -80,10 +161,123 @@ const handleLogout = () => {
             and explore Bangalore responsibly.
           </p>
 
-          <button className="btn btn-primary cta">Plan Your Eco Trip</button>
+          <button className="btn btn-primary cta" onClick={() => navigate("/plan-itinerary")} >Plan Your Eco Trip</button>
         </div>
       </main>
+      <main className="Explore">
+        <section className="location-section">
+  <h2>📍 Where are you right now?</h2>
 
+  <div className="location-box">
+    <input
+      type="text"
+      placeholder="Enter your city or location"
+      value={location}
+      onChange={(e) => setLocation(e.target.value)}
+    />
+
+    <button onClick={getCurrentLocation}>
+      Use Current Location
+    </button>
+  </div>
+
+  {error && <p className="error">{error}</p>}
+</section>
+
+      </main>
+      <section className="actions-section">
+  <h2>What would you like to do?</h2>
+
+  <div className="action-buttons">
+    <button onClick={() => navigate("/plan-itinerary")}>
+   🧭 Plan an Itinerary
+</button>
+    
+
+    <button
+      className="btn btn-outline"
+      onClick={() => navigate("/my-itineraries")}
+    >
+      📂 View Existing Plans
+    </button>
+  </div>
+</section>
+
+{/* ===================== ABOUT US ===================== */}
+      <section ref={aboutRef} className="info-section">
+        <h2>About Us</h2>
+        <p>
+          EcoTravel BLR helps users plan sustainable travel by promoting
+          eco-friendly transportation, responsible stays, and low-carbon itineraries.
+        </p>
+      </section>
+
+      {/* ===================== TRAVEL MODES ===================== */}
+      <section ref={modesRef} className="info-section modes">
+  <h2>Travel Modes</h2>
+
+  <div className="modes-grid">
+    <div
+      className="mode-card"
+      onClick={() =>
+        setSelectedMode(selectedMode === "walking" ? null : "walking")
+      }
+    >
+      🚶‍♂️ Walking
     </div>
+
+    <div
+      className="mode-card"
+      onClick={() =>
+        setSelectedMode(selectedMode === "cycling" ? null : "cycling")
+      }
+    >
+      🚲 Cycling
+    </div>
+
+    <div
+      className="mode-card"
+      onClick={() =>
+        setSelectedMode(selectedMode === "bus" ? null : "bus")
+      }
+    >
+      🚌 Public Transport
+    </div>
+
+    <div
+      className="mode-card"
+      onClick={() =>
+        setSelectedMode(selectedMode === "ev" ? null : "ev")
+      }
+    >
+      ⚡ Electric Vehicles
+    </div>
+  </div>
+
+  {/* DETAILS BOX */}
+  {selectedMode && (
+    <div className="mode-details">
+      <h3>{modeDetails[selectedMode].title}</h3>
+      <p>{modeDetails[selectedMode].text}</p>
+    </div>
+  )}
+</section>
+
+
+      {/* ===================== CONTACT ===================== */}
+      <section ref={contactRef} className="info-section contact">
+        <h2>Contact Us</h2>
+        <p>Email: ecotravel@gmail.com</p>
+        <p>Phone: +91 9XXXXXXXXX</p>
+      </section>
+
+<footer className="footer">
+  <div className="footer-content">
+    <p>&copy; 2026 EcoTravel. All rights reserved.</p>
+    <p>Developed by: Nandhana • Monisha • Sindhuja</p>
+  </div>
+</footer>
+    </div>
+
   );
 }
