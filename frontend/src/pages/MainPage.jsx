@@ -1,4 +1,4 @@
-import React, { useState,useRef } from "react";
+import React, { useState,useEffect,useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LandingPage.css";
 import "./MainPage.css";
@@ -13,7 +13,7 @@ export default function MainPage() {
 const [activeSection, setActiveSection] = useState('home');
 
   const [selectedMode, setSelectedMode] = useState(null);
-
+const [userPrefs, setUserPrefs] = useState({ travelPreferences: [] });
   const aboutRef = useRef(null);
   const modesRef = useRef(null);
   const contactRef = useRef(null);
@@ -40,6 +40,84 @@ const [activeSection, setActiveSection] = useState('home');
       "Electric vehicles produce fewer emissions compared to petrol vehicles and help reduce air pollution when powered by clean energy."
   }
 };
+// ✅ NEW: Fetch user preferences on mount
+  useEffect(() => {
+    const token = localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
+    if (token) {
+      try {
+        // Decode JWT payload (assumes user prefs stored in token)
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        setUserPrefs(payload.user || { travelPreferences: [] });
+      } catch (e) {
+        // Fallback: fetch from API
+        fetch("http://localhost:5000/api/user/profile", {
+          headers: { "Authorization": `Bearer ${token}` }
+        })
+          .then(res => res.json())
+          .then(data => setUserPrefs(data))
+          .catch(() => setUserPrefs({ travelPreferences: [] }));
+      }
+    }
+  }, []);
+
+  // ✅ REPLACE your ecoSpots array with this (online images - NO local files needed!)
+const ecoSpots = [
+  { 
+    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPu0GRh6sLARuSc8vQUTNsIE7n4AWX54v2Vg&sfit=crop", 
+    alt: "Lalbagh Botanical Garden", 
+    tags: ["Nature", "Culture", "Walking"], 
+    area: "South Bengaluru" 
+  },
+  { 
+    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPu0GRh6sLARuSc8vQUTNsIE7n4AWX54v2Vg&s=crop", 
+    alt: "Cubbon Park trails", 
+    tags: ["Nature", "Relaxation", "Cycling"], 
+    area: "MG Road" 
+  },
+  { 
+    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_CMdBxbMGSeaj8mZkiLOpG_yGs70Snhrpvg&sfit=crop", 
+    alt: "Bannerghatta Safari", 
+    tags: ["Adventure", "Nature"], 
+    area: "Bannerghatta Rd" 
+  },
+  { 
+    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7PzPMqRKV8EU3U2CbLpctHfA0KgSMvLf9uQ&sfit=crop", 
+    alt: "Hebbal Lake eco-boating", 
+    tags: ["Nature", "Relaxation", "Public Transport"], 
+    area: "North Bengaluru" 
+  },
+  { 
+    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdYKEU0P8xFODXLF59D07_ho_9sHWYCl3B3A&sfit=crop", 
+    alt: "Hesaraghatta cycling trail", 
+    tags: ["Adventure", "Cycling"], 
+    area: "Northwest" 
+  },
+  { 
+    src: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=220&fit=crop", 
+    alt: "Turahalli Forest hike", 
+    tags: ["Adventure", "Nature", "Walking"], 
+    area: "Southwest" 
+  },
+  { 
+    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqoG3Y3-tF-iy23_YBZhlZhsXcdsrdaZWjwg&sfit=crop", 
+    alt: "Nandi Hills green view", 
+    tags: ["Adventure", "Nature"], 
+    area: "Chikkaballapur" 
+  },
+  { 
+    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpXpM5PkhBGPCoRMDffvY8TpXs6AtCCVui-A&sfit=crop", 
+    alt: "Sankey Tank walk", 
+    tags: ["Nature", "Relaxation"], 
+    area: "Malleshwaram" 
+  }
+];
+
+
+  // Filter spots by user signup preferences
+  const filteredSpots = ecoSpots.filter(spot => 
+    userPrefs.travelPreferences.length === 0 || 
+    spot.tags.some(tag => userPrefs.travelPreferences.includes(tag))
+  );
 
   const getCurrentLocation = () => {
     if (!navigator.geolocation) {
@@ -202,7 +280,24 @@ const handleLogout = () => {
     </button>
   </div>
 </section>
+ {/* ✅ NEW: ECO CAROUSEL SECTION - Inserted here for perfect flow */}
+      <section className="eco-carousel-section">
+        <h2>🌿 Eco Spots Near {location} for Your Interests</h2>
+        <p>Matching your preferences: {userPrefs.travelPreferences.join(', ') || 'All green adventures'}</p>
+        <div className="eco-carousel">
+          {filteredSpots.map((spot, index) => (
+            <div key={index} className="eco-card">
+              <img src={spot.src} alt={spot.alt} loading="lazy" />
+              <div className="spot-info">
+                <h3>{spot.alt}</h3>
+                <p>{spot.area} • {spot.tags.join(', ')}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
 
+      
 {/* ===================== ABOUT US ===================== */}
       <section ref={aboutRef} className="info-section">
         <h2>About Us</h2>
