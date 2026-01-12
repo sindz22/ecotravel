@@ -2,7 +2,7 @@ import React, { useState,useEffect,useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LandingPage.css";
 import "./MainPage.css";
-import API_BASE_URL from "../../config";  // Adjust path: ../config or ../../config
+import API_BASE_URL from "../config";
 
 
 export default function MainPage() {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./MyItineraries.css";
-import API_BASE_URL from "../../config";  // Adjust path: ../config or ../../config
+import API_BASE_URL from "../config";
 
 
 export default function MyItineraries() {

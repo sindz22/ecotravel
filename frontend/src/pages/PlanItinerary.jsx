@@ -4,7 +4,7 @@ import { getRoute } from "../api/routeApi";
 import LocationSearch from "../components/LocationSearch";
 import PlacesCheckboxList from "../components/PlacesCheckboxList";
 import { useNavigate, useParams } from "react-router-dom";  // ✅ ADD useParams
-import API_BASE_URL from "../../config";  // Adjust path: ../config or ../../config
+import API_BASE_URL from "../config";
 
 
 const modeMap = {
