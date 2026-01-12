@@ -33,10 +33,12 @@ app.use("/api", overpassRouter);
 app.use("/api", airportsRouter);
 app.use('/api/itineraries', itinerariesRouter);  // ✅ ADD THIS LINE
 
+const MONGO_URI =
+  process.env.MONGO_URI ||
+  "mongodb://localhost:27017/ecotravel"; // local fallback
 
-// ✅ 6. Connect to MongoDB
-// Tries to connect to Atlas (if in .env) OR Localhost
-mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/ecotravel")
+mongoose
+  .connect(MONGO_URI, { serverSelectionTimeoutMS: 10000 })
   .then(() => console.log("✅ MongoDB connected successfully"))
   .catch((err) => {
     console.error("❌ MongoDB connection error:", err);
@@ -44,21 +46,26 @@ mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/ecotravel")
     console.log("⚠️ If using Atlas, check your IP whitelist.");
   });
 
-// --- Optional: Fallback/Test Routes (Preserved from your code) ---
+// Test / health route
+app.get("/", (req, res) => {
+  res.send("EcoTravel backend is running");
+});
 
-// Mock route endpoint (keep this if your frontend calls it directly)
+// Mock route endpoint (optional)
 app.post("/route", (req, res) => {
   console.log("Route endpoint hit:", req.body);
   res.json({
-    features: [{
-      properties: {
-        summary: { distance: 173000, duration: 10200 }
-      }
-    }]
+    features: [
+      {
+        properties: {
+          summary: { distance: 173000, duration: 10200 },
+        },
+      },
+    ],
   });
 });
 
-// Manual Overpass fallback (safety net if route file fails)
+// Manual Overpass proxy
 app.post("/overpass", async (req, res) => {
   try {
     const { query } = req.body;
@@ -73,7 +80,6 @@ app.post("/overpass", async (req, res) => {
   }
 });
 
-// ✅ 7. Start Server
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
