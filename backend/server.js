@@ -51,6 +51,17 @@ app.get("/", (req, res) => {
   res.send("EcoTravel backend is running");
 });
 
+const cors = require('cors');
+
+app.use(cors({
+  origin: [
+    "http://localhost:5173",           // Dev
+    "https://ecotravel-cdvm7ckg3-nalluri-sindhujas-projects.vercel.app" // Production (your Vercel URL)
+  ],
+  credentials: true
+}));
+
+
 // Mock route endpoint (optional)
 app.post("/route", (req, res) => {
   console.log("Route endpoint hit:", req.body);
