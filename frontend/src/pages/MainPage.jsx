@@ -69,7 +69,7 @@ const ecoSpots = [
     area: "South Bengaluru" 
   },
   { 
-    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPu0GRh6sLARuSc8vQUTNsIE7n4AWX54v2Vg&s=crop", 
+    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCgMIya6pYsTm6ebvx5KIJQlRh3SlF98VDAg&sfit=crop", 
     alt: "Cubbon Park trails", 
     tags: ["Nature", "Relaxation", "Cycling"], 
     area: "MG Road" 
