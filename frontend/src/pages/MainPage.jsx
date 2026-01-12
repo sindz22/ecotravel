@@ -2,6 +2,7 @@ import React, { useState,useEffect,useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LandingPage.css";
 import "./MainPage.css";
+import API_BASE_URL from "../../config";  // Adjust path: ../config or ../../config
 
 
 export default function MainPage() {
@@ -50,7 +51,7 @@ const [userPrefs, setUserPrefs] = useState({ travelPreferences: [] });
         setUserPrefs(payload.user || { travelPreferences: [] });
       } catch (e) {
         // Fallback: fetch from API
-        fetch("http://localhost:5000/api/user/profile", {
+        fetch(`${API_BASE_URL}/api/userprofile/login`, {
           headers: { "Authorization": `Bearer ${token}` }
         })
           .then(res => res.json())

@@ -4,6 +4,8 @@ import { getRoute } from "../api/routeApi";
 import LocationSearch from "../components/LocationSearch";
 import PlacesCheckboxList from "../components/PlacesCheckboxList";
 import { useNavigate, useParams } from "react-router-dom";  // ✅ ADD useParams
+import API_BASE_URL from "../../config";  // Adjust path: ../config or ../../config
+
 
 const modeMap = {
   Walking: "foot-walking",
@@ -94,7 +96,7 @@ useEffect(() => {
 const loadItinerary = async (itineraryId) => {
   try {
     const token = localStorage.getItem('token');
-    const res = await fetch(`http://localhost:5000/api/itineraries/${itineraryId}`, {
+    const res = await fetch(`${API_BASE_URL}/api/itineraries/${itineraryId}`, {
       headers: { Authorization: `Bearer ${token}` }
     });
     
@@ -305,7 +307,7 @@ const handleSave = async () => {
 
     console.log('💾 SAVING DATA:', itineraryData.title, 'stops:', itineraryData.stops.length);
 
-    const url = id ? `http://localhost:5000/api/itineraries/${id}` : 'http://localhost:5000/api/itineraries';
+    const url = id ? `${API_BASE_URL}/api/itineraries/${id}` : `${API_BASE_URL}/api/itineraries`;
     const method = id ? 'PUT' : 'POST';
     
     const res = await fetch(url, {
@@ -365,7 +367,7 @@ const handleSave = async () => {
 
   const checkAirports = async (coords, which) => {
     try {
-      const res = await fetch("http://localhost:5000/api/airports", {
+      const res = await fetch(`${API_BASE_URL}/api/airports`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(coords),
@@ -557,7 +559,7 @@ const handleSave = async () => {
   );out tags center;`;
 
   try {
-    const res = await fetch("http://localhost:5000/api/overpass", {
+    const res = await fetch(`${API_BASE_URL}/api/overpass`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ query }),

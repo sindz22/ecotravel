@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./MyItineraries.css";
+import API_BASE_URL from "../../config";  // Adjust path: ../config or ../../config
+
 
 export default function MyItineraries() {
   const [itineraries, setItineraries] = useState([]);
@@ -20,7 +22,7 @@ export default function MyItineraries() {
 
   const fetchItineraries = async () => {
   try {
-    const res = await fetch('http://localhost:5000/api/itineraries', {  // ✅ FIXED URL
+    const res = await fetch(`${API_BASE_URL}/api/itineraries`, {  // ✅ FIXED URL
       headers: { 
         Authorization: `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': 'application/json'
