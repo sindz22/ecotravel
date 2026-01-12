@@ -18,11 +18,17 @@ dotenv.config();
 // ✅ 3. Initialize App
 const app = express();
 const PORT = process.env.PORT || 5000;
+const cors = require('cors');
 
 // ✅ 4. Middleware
 app.use(cors());
 app.use(express.json());
+
+app.use(cors({ origin: "*", credentials: true }));
+app.options('*', cors());
+
 app.use('/api/user', userRoutes);  
+
 
 // ✅ 5. Mount Routes
 // Auth Routes (Login/Signup)
@@ -46,21 +52,11 @@ mongoose
     console.log("⚠️ If using Atlas, check your IP whitelist.");
   });
 
+  
 // Test / health route
 app.get("/", (req, res) => {
   res.send("EcoTravel backend is running");
 });
-
-const cors = require('cors');
-
-app.use(cors({
-  origin: [
-    "http://localhost:5173",           // Dev
-    "https://ecotravel-cdvm7ckg3-nalluri-sindhujas-projects.vercel.app" // Production (your Vercel URL)
-  ],
-  credentials: true
-}));
-
 
 // Mock route endpoint (optional)
 app.post("/route", (req, res) => {
