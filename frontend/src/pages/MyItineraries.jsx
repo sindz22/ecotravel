@@ -42,7 +42,7 @@ export default function MyItineraries() {
   const deleteItinerary = async (id) => {
     if (confirm('Delete this itinerary permanently?')) {
       try {
-        await fetch(`/api/itineraries/${id}`, { 
+        await fetch(`${API_BASE_URL}/api/itineraries/${id}`, { 
           method: 'DELETE',
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });

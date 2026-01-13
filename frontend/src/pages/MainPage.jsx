@@ -43,7 +43,7 @@ const [userPrefs, setUserPrefs] = useState({ travelPreferences: [] });
 };
 // ✅ NEW: Fetch user preferences on mount
   useEffect(() => {
-    const token = localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
+    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
     if (token) {
       try {
         // Decode JWT payload (assumes user prefs stored in token)
@@ -51,7 +51,7 @@ const [userPrefs, setUserPrefs] = useState({ travelPreferences: [] });
         setUserPrefs(payload.user || { travelPreferences: [] });
       } catch (e) {
         // Fallback: fetch from API
-        fetch(`${API_BASE_URL}/api/userprofile/login`, {
+        fetch(`${API_BASE_URL}/api/user/profile`, {
           headers: { "Authorization": `Bearer ${token}` }
         })
           .then(res => res.json())
