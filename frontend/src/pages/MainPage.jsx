@@ -298,17 +298,7 @@ const handleLogout = () => {
         </div>
       </section>
 
-      
-{/* ===================== ABOUT US ===================== */}
-      <section ref={aboutRef} className="info-section">
-        <h2>About Us</h2>
-        <p>
-          EcoTravel BLR helps users plan sustainable travel by promoting
-          eco-friendly transportation, responsible stays, and low-carbon itineraries.
-        </p>
-      </section>
-
-      {/* ===================== TRAVEL MODES ===================== */}
+        {/* ===================== TRAVEL MODES ===================== */}
       <section ref={modesRef} className="info-section modes">
   <h2>Travel Modes</h2>
 
@@ -358,6 +348,16 @@ const handleLogout = () => {
     </div>
   )}
 </section>
+{/* ===================== ABOUT US ===================== */}
+      <section ref={aboutRef} className="info-section">
+        <h2>About Us</h2>
+        <p>
+          EcoTravel helps users plan sustainable travel by promoting
+          eco-friendly transportation, responsible stays, and low-carbon itineraries.
+        </p>
+      </section>
+
+    
 
 
       {/* ===================== CONTACT ===================== */}

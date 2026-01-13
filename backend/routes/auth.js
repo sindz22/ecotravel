@@ -8,9 +8,16 @@ const router = express.Router();
 // ---------------- SIGNUP ----------------
 router.post("/signup", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    console.log("Signup fields:", req.body);  // DEBUG: See ALL fields
 
-    // Check existing user
+    const { email, password, name, dob, travelPreferences, travelFrequency, ecoLevel, mobilityPreferences, accommodationPreferences, diet, allergies } = req.body;
+
+    // Validate required
+    if (!email || !password || !name) {
+      return res.status(400).json({ message: "Name, email, password required!" });
+    }
+
+    // Email exists
     const existing = await User.findOne({ email });
     if (existing) {
       return res.status(400).json({ message: "Email already registered!" });
@@ -19,15 +26,28 @@ router.post("/signup", async (req, res) => {
     // Hash password
     const hashed = await bcrypt.hash(password, 10);
 
-    // Save new user
-    const newUser = new User({ ...req.body, password: hashed });
+    // Create user with ALL fields (your model supports them perfectly)
+    const newUser = new User({
+      name,
+      email,
+      password: hashed,
+      dob,
+      travelPreferences: travelPreferences || [],
+      travelFrequency,
+      ecoLevel,
+      mobilityPreferences: mobilityPreferences || [],
+      accommodationPreferences: accommodationPreferences || [],
+      diet,
+      allergies
+    });
+
     await newUser.save();
+    console.log("✅ User created:", newUser.email);
 
-    return res.status(201).json({ message: "Account created successfully!" });
-
+    res.status(201).json({ message: "Account created successfully!" });
   } catch (err) {
-    console.log(err);
-    return res.status(500).json({ message: "Signup error!" });
+    console.error("❌ Signup ERROR:", err.message);  // Detailed error to Render logs
+    res.status(500).json({ message: `Signup error: ${err.message}` });
   }
 });
 
