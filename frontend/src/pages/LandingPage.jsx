@@ -213,7 +213,10 @@ const getCurrentLocation = () => {
   <h2>What would you like to do?</h2>
 
   <div className="action-buttons">
-    <button onClick={() => navigate("/login")}>
+    <button onClick={() => {
+    navigate("/login");
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+  }}>
    🧭 Plan an Itinerary
 </button>
     

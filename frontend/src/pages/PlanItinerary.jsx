@@ -14,6 +14,15 @@ const modeMap = {
   Train: "driving-rail",
   Flight: "flight-fastest",
 };
+const CARBON_PER_KM = {
+  "Walking": 0,      // ✅ Capitalized to match legModes!
+  "Cycling": 10,
+  "Car": 170,        // ✅ Car = 170g/km ✓
+  "Train": 40,
+  "Flight": 250
+};
+
+
 
 const ALL_MODES = ["Walking", "Cycling", "Car", "Train", "Flight"];
 
@@ -62,6 +71,9 @@ const contactRef = useRef(null);
   const [customReturnPlace, setCustomReturnPlace] = useState(null);
   const [visibleCount, setVisibleCount] = useState(10);
   const [routeSummary, setRouteSummary] = useState(null);
+  const [totalCO2, setTotalCO2] = useState(0);
+const [co2Savings, setCo2Savings] = useState(0);
+
   const [currentLegIndex, setCurrentLegIndex] = useState(-1);
   const [searchText, setSearchText] = useState({}); // ✅ ADD THIS
   const [returnMode, setReturnMode] = useState("Car");  // ✅ NEW
@@ -91,6 +103,11 @@ useEffect(() => {
   }
 }, [stops.length, legModes.length]);
 
+useEffect(() => {
+  if (returnDestination !== "none" && legs.length > 0) {
+    calculateAllLegs(); // Recalc when return changes
+  }
+}, [returnDestination, returnMode]);
 
   // ✅ LOAD EXISTING ITINERARY FOR EDIT
 const loadItinerary = async (itineraryId) => {
@@ -323,7 +340,9 @@ const handleSave = async () => {
 
     if (res.ok) {
       alert(id ? '✅ Updated successfully!' : '✅ Saved successfully!');
-      navigate('/main');
+      navigate('/main', { replace: true });
+window.scrollTo({ top: 0, behavior: 'smooth' });
+
     } else {
       const errorData = await res.json();
       console.error('Save error:', errorData);
@@ -421,7 +440,7 @@ const handleSave = async () => {
     const allLegs = [];
     let totalDistance = 0;
     let totalDurationMs = 0;
-
+    let totalCO2Calc = 0;
     // Initialize modes for all legs if needed
     
 
@@ -451,6 +470,9 @@ const handleSave = async () => {
         };
         
         totalDistance += legDistance;
+const returnLegCO2 = CARBON_PER_KM[mode] * legDistance;
+totalCO2Calc += returnLegCO2;
+
         totalDurationMs += summary.duration;
       } catch (err) {
         console.error(`Leg ${i} error:`, err);
@@ -483,6 +505,10 @@ const handleSave = async () => {
         
         totalDistance += legDistance;
         totalDurationMs += summary.duration;
+        const returnLegCO2 = CARBON_PER_KM[mode] * legDistance;
+totalCO2Calc += returnLegCO2;
+console.log(`🔄 Return ${mode}: ${legDistance}km = ${returnLegCO2}g`); // Debug
+
       } catch (err) {
         console.error("Return leg error:", err);
       }
@@ -515,6 +541,9 @@ const handleSave = async () => {
         console.error("Custom return leg error:", err);
       }
     }
+setTotalCO2(Math.round(totalCO2Calc));
+const carCO2 = 170 * totalDistance;
+setCo2Savings(Math.round(carCO2 - totalCO2Calc));
 
     setLegs(allLegs);
     setDistance(totalDistance.toFixed(1));
@@ -978,6 +1007,20 @@ const handleLogout = () => {
           <div className="total-row"><span>⏱️ Travel Time:</span><strong>{routeSummary.totalTravel}</strong></div>
           <div className="total-row"><span>👓 Sightseeing:</span><strong>{routeSummary.sightseeingHours.toFixed(1)}hr</strong></div>
           <div className="total-row"><span>🍽️ Meals/Rest:</span><strong>{routeSummary.bufferHours.toFixed(0)}hr</strong></div>
+{totalCO2 > 50000 ? (
+  <div className="total-row saved-row">
+    <span>🔥High Impact:</span><strong>{(totalCO2/1000).toFixed(1)}kg</strong>
+    <span>Aim for Train/Bus next time! ⚠️</span>
+  </div>
+) : (
+  <div className="total-row saved-row">
+    <span>✅ Saved vs Car:</span><strong>{(co2Savings/1000).toFixed(1)}kg</strong>
+  </div>
+)}
+<div className="total-row co2-row">
+  <span>🌍 Total CO₂:</span><strong>{(totalCO2/1000).toFixed(1)}kg</strong>
+</div>
+
           <div className="total-row highlight">
             <span>📅 Total Duration:</span>
             <strong>{(routeSummary.totalTravelHours + routeSummary.sightseeingHours + routeSummary.bufferHours).toFixed(1)}hr</strong>
