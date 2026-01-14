@@ -21,7 +21,25 @@ export default function Login() {
     }
   }, []);
 
-  const handleLogin = async (e) => {
+//   const handleLogin = async (e) => {
+//   e.preventDefault();
+  
+//   const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify({ email, password }),
+//   });
+
+//   const data = await res.json();
+//   setMsg(data.message);
+
+//   if (res.status === 200) {
+//     localStorage.setItem('token', data.token);  // ✅ SAVE TOKEN
+//     console.log('✅ Token saved!');
+//     setTimeout(() => navigate("/main"), 1500);      // ✅ MAIN PAGE
+//   }
+// };
+const handleLogin = async (e) => {
   e.preventDefault();
   
   const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
@@ -31,14 +49,22 @@ export default function Login() {
   });
 
   const data = await res.json();
-  setMsg(data.message);
-
-  if (res.status === 200) {
-    localStorage.setItem('token', data.token);  // ✅ SAVE TOKEN
-    console.log('✅ Token saved!');
-    setTimeout(() => navigate("/main"), 1500);      // ✅ MAIN PAGE
+  
+  if (res.status !== 200) {
+    setMsg(data.message); // RED ERROR
+    return;
   }
+  
+  // ✅ SHOW GREEN SUCCESS IMMEDIATELY
+  setFlashMsg('✅ Login successful!');
+  localStorage.setItem('token', data.token);
+  
+  // ✅ THEN REDIRECT AFTER 1.5s
+  setTimeout(() => {
+    navigate("/main");
+  }, 1500);
 };
+
 
   return (
     <div >
