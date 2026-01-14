@@ -692,7 +692,7 @@ const handleLogout = () => {
 
     <div className="section">
       <div className="section-header">
-        <h3>🛣️ Destinations</h3>
+        <h3 >🛣️ Destinations</h3>
         <button className="add-stop-btn" onClick={addStop}>+ Add Stop</button>
       </div>
       {stops.map((stop, index) => {

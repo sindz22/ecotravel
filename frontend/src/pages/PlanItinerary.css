@@ -19,6 +19,8 @@
   --shadow: 0 10px 30px rgba(17,24,39,0.06);
 }
 
+
+
 /* Page */
 .plan-container{
   max-width: 980px;
@@ -50,7 +52,7 @@
   font-weight: 600;
   color: #374151;
   margin: 10px 0 6px;
-  font-size: 13px;
+  font-size: 20px;
 }
 
 .section input[type="text"],
@@ -62,7 +64,7 @@
   border-radius: 10px;
   background: #fff;
   color: var(--text);
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .section input:focus,
@@ -120,7 +122,7 @@
   border-radius: 12px;
   padding: 10px 12px;
   margin: 10px 0;
-  font-size: 13px;
+  font-size: 20px;
 }
 
 /* Stop cards */
@@ -157,7 +159,7 @@
 
 .stop-badge{
   display:inline-block;
-  font-size: 12px;
+  font-size: 20px;
   font-weight: 800;
   color: var(--sage-700);
   background: var(--sage-100);
@@ -227,7 +229,7 @@
   border-radius: 999px;
   padding: 4px 10px;
   font-weight: 800;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .empty-state{
@@ -303,7 +305,7 @@
 .duration-label{
   color: var(--muted);
   font-weight: 700;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .load-more-btn{
@@ -356,7 +358,7 @@
 .route-summary span{
   display:block;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 18px;
   margin-top: 4px;
 }
 
@@ -454,7 +456,7 @@
   background: white;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: 1rem;
   display: flex;
   align-items: center;
   gap: 0.25rem;
@@ -484,7 +486,7 @@
 }
 
 .best-badge {
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   color: #FF9800;
 }
 
@@ -498,7 +500,7 @@
 }
 
 .leg-from {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: #666;
   margin-top: 0.25rem;
 }
@@ -506,7 +508,7 @@
 .mode-tag {
   padding: 0.25rem 0.5rem;
   border-radius: 20px;
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 600;
   margin-left: 0.5rem;
 }
@@ -563,7 +565,7 @@
   text-align: center;
 }
 
-.total-breakdown {
+.total-breakdown {  
   background: rgba(255,255,255,0.8);
   padding: 1.5rem;
   border-radius: 12px;
@@ -591,7 +593,7 @@
   color: white;
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 600;
 }
 /* 🌿 ECO-TRAVEL THEME: LocationSearch Input (.location-input) */
@@ -602,7 +604,7 @@
   border: 1px solid var(--border) !important;    /* Thin light border */
   border-radius: 10px !important;                /* Slightly round edges */
   padding: 14px 16px !important;                 /* Decent padding */
-  font-size: 16px !important;
+  font-size: 20px !important;
   width: 100% !important;
   box-sizing: border-box !important;
 }
@@ -629,7 +631,7 @@
 
 .search-places-btn {
   background: #5bba69; color: white; border: none;
-  padding: 8px 16px; border-radius: 20px; font-size: 14px;
+  padding: 8px 16px; border-radius: 20px; font-size: 20px;
   cursor: pointer; margin: 8px 0; font-weight: 500; width: 100%;
 }
 .search-places-btn:hover:not(:disabled) { background: #2563eb; }
@@ -637,7 +639,7 @@
 
 .load-more-btn {
   background: #5bba69; color: white; border: none;
-  padding: 6px 12px; border-radius: 20px; font-size: 12px;
+  padding: 6px 12px; border-radius: 20px; font-size:16px;
   cursor: pointer; margin-top: 8px; width: 100%;
 }
 
@@ -648,7 +650,7 @@
   border: 1px solid var(--border) !important;
   border-radius: 10px !important;
   padding: 14px 16px !important;
-  font-size: 16px !important;
+  font-size: 20px !important;
   width: 100% !important;
   box-sizing: border-box !important;
 }
@@ -700,7 +702,7 @@
   background: linear-gradient(135deg, #799c51, #6b8a49) !important;
   color: white !important;
   padding: 18px 36px !important;
-  font-size: 16px !important;
+  font-size: 22px !important;
   font-weight: 700 !important;
   border-radius: 16px !important;
   border: none !important;
@@ -719,7 +721,8 @@
   background: linear-gradient(135deg, #4ade80, #22c55e) !important;
   color: white !important;
   padding: 20px 40px !important;
-  font-size: 18px !important;
+  font-size: 20px
+  !important;
   font-weight: 700 !important;
   border-radius: 16px !important;
   border: none !important;
@@ -797,4 +800,99 @@
   .footer {
     padding: 40px 20px 30px;
   }
+}
+/* 🌿 ECO-TRAVEL THEME: LocationSearch Label Fix */
+/* Makes "🚩 Start Location" font-size 20px */
+
+.LocationSearch label,
+.location-search label,
+[for*="LocationSearch"] label {
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  color: #374151 !important;
+  margin-bottom: 8px !important;
+  display: block !important;
+}
+
+/* Specific start/destination location labels */
+.start-location-label,
+.destination-location-label,
+.LocationSearch:has(input[placeholder*="Start"]),
+.LocationSearch:has(input[placeholder*="Destination"]) label {
+  font-size: 20px !important;
+}
+
+/* Fallback for common LocationSearch patterns */
+.plan-container .LocationSearch label,
+.section .LocationSearch label,
+.LocationSearch > label:first-child {
+  font-size: 20px !important;
+  line-height: 1.4 !important;
+}
+
+/* Ensure emoji renders properly */
+.LocationSearch label::before,
+.LocationSearch label > span:first-child {
+  font-size: 20px !important;
+}
+/* 🛣️ DESTINATIONS HEADING FIX */
+/* Makes h3 "🛣️ Destinations" font-size 25px */
+
+.plan-container h3,
+.section h3,
+h3[style*="font-size"] {
+  font-size: 22px !important;
+  font-weight: 700 !important;
+  color: var(--text) !important;
+  line-height: 1.3 !important;
+  margin: 0 0 16px 0 !important;
+  letter-spacing: -0.02em !important;
+}
+
+/* Specific destinations heading */
+h3:has-text("Destinations"),
+.plan-container h3:has(🛣️),
+h3[style*="25px"] {
+  font-size: 22px !important;
+}
+
+/* Override inline styles safely */
+h3[style] {
+  font-size: 22px !important;
+}
+
+/* Emoji compatibility */
+.plan-container h3::before,
+h3 > span:first-child {
+  font-size: 22px !important;
+}
+/* 🎯 ITINERARY NAME INLINE STYLE OVERRIDE */
+/* Forces "Itinerary Name *" label to 25px despite inline style */
+
+.section label[style],
+.section label {
+  font-size: 22px !important;  /* 25px - Larger heading size */
+  font-weight: 700 !important;
+  color: #374151 !important;
+  margin: 12px 0 8px !important;
+  display: block !important;
+  line-height: 1.3 !important;
+}
+
+/* Specific override for inline style attempts */
+.section label[style*="size"],
+.section label[style*="25"] {
+  font-size: 22px !important;
+}
+
+/* Input harmony - slightly larger too */
+.section input[type="text"] {
+  font-size: 20px !important;
+  padding: 16px 18px !important;
+  margin-top: 4px;
+}
+
+/* Title section gets heading treatment */
+.section:has(label:has-text("Itinerary Name")) {
+  padding: 24px !important;
 }
