@@ -14,6 +14,85 @@ export default function LandingPage() {
   const modesRef = useRef(null);
   const contactRef = useRef(null);
 
+  // ✅ Needed for location input + error + prefs
+const [location, setLocation] = useState("");
+const [error, setError] = useState("");
+const [userPrefs] = useState({ travelPreferences: [] });
+
+
+  // ✅ REPLACE your ecoSpots array with this (online images - NO local files needed!)
+const ecoSpots = [
+  { 
+    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPu0GRh6sLARuSc8vQUTNsIE7n4AWX54v2Vg&sfit=crop", 
+    alt: "Lalbagh Botanical Garden", 
+    tags: ["Nature", "Culture", "Walking"], 
+    area: "South Bengaluru" 
+  },
+  { 
+    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCgMIya6pYsTm6ebvx5KIJQlRh3SlF98VDAg&sfit=crop", 
+    alt: "Cubbon Park trails", 
+    tags: ["Nature", "Relaxation", "Cycling"], 
+    area: "MG Road" 
+  },
+  { 
+    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpXpM5PkhBGPCoRMDffvY8TpXs6AtCCVui-A&sfit=crop", 
+    alt: "Sankey Tank walk", 
+    tags: ["Nature", "Relaxation"], 
+    area: "Malleshwaram" 
+  },
+  { 
+    src: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=220&fit=crop", 
+    alt: "Turahalli Forest hike", 
+    tags: ["Adventure", "Nature", "Walking"], 
+    area: "Southwest" 
+  },
+  { 
+    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7PzPMqRKV8EU3U2CbLpctHfA0KgSMvLf9uQ&sfit=crop", 
+    alt: "Hebbal Lake eco-boating", 
+    tags: ["Nature", "Relaxation", "Public Transport"], 
+    area: "North Bengaluru" 
+  },
+  { 
+    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_CMdBxbMGSeaj8mZkiLOpG_yGs70Snhrpvg&sfit=crop", 
+    alt: "Bannerghatta Safari", 
+    tags: ["Adventure", "Nature"], 
+    area: "Bannerghatta Rd" 
+  },
+  { 
+    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdYKEU0P8xFODXLF59D07_ho_9sHWYCl3B3A&sfit=crop", 
+    alt: "Hesaraghatta cycling trail", 
+    tags: ["Adventure", "Cycling"], 
+    area: "Northwest" 
+  },
+  { 
+    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqoG3Y3-tF-iy23_YBZhlZhsXcdsrdaZWjwg&sfit=crop", 
+    alt: "Nandi Hills green view", 
+    tags: ["Adventure", "Nature"], 
+    area: "Chikkaballapur" 
+  }
+];
+
+const filteredSpots = ecoSpots; // simple: show all on landing
+
+// ✅ Basic current location handler
+const getCurrentLocation = () => {
+  if (!navigator.geolocation) {
+    setError("Geolocation not supported by browser");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const { latitude, longitude } = position.coords;
+      setLocation(`Lat: ${latitude.toFixed(4)}, Lng: ${longitude.toFixed(4)}`);
+      setError("");
+    },
+    () => {
+      setError("Location permission denied");
+    }
+  );
+};
+
   // ✅ modeDetails object (already correct)
   const modeDetails = {
     walking: {
@@ -92,7 +171,56 @@ export default function LandingPage() {
           </button>
         </div>
         </main>
+              <main className="Explore">
+        <section className="location-section">
+  <h2>📍 Where are you right now?</h2>
 
+  <div className="location-box">
+    <input
+      type="text"
+      placeholder="Enter your city or location"
+      value={location}
+      onChange={(e) => setLocation(e.target.value)}
+    />
+
+    <button onClick={getCurrentLocation}>
+      Use Current Location
+    </button>
+  </div>
+
+  {error && <p className="error">{error}</p>}
+</section>
+
+      </main>
+      
+ {/* ✅ NEW: ECO CAROUSEL SECTION - Inserted here for perfect flow */}
+      <section className="eco-carousel-section">
+        <h2>🌿 Eco Spots Near {location} for Your Interests</h2>
+        <p>Matching your preferences: {userPrefs.travelPreferences.join(', ') || 'All green adventures'}</p>
+        <div className="eco-carousel">
+          {filteredSpots.map((spot, index) => (
+            <div key={index} className="eco-card">
+              <img src={spot.src} alt={spot.alt} loading="lazy" />
+              <div className="spot-info">
+                <h3>{spot.alt}</h3>
+                <p>{spot.area} • {spot.tags.join(', ')}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+      <section className="actions-section">
+  <h2>What would you like to do?</h2>
+
+  <div className="action-buttons">
+    <button onClick={() => navigate("/login")}>
+   🧭 Plan an Itinerary
+</button>
+    
+
+    
+  </div>
+</section>
         {/* ===================== TRAVEL MODES ===================== */}
         <section ref={modesRef} className="info-section modes">
           <h2>Travel Modes</h2>

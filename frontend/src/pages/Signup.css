@@ -55,6 +55,7 @@ body,
   border: 1px solid #cccccc;
   border-radius: 8px;
   background-color: #edecec;
+  color: #333 !important;
 }
 
 .check-group,
