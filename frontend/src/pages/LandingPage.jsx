@@ -1,11 +1,14 @@
-import React, { useState, useRef } from "react";  // ✅ Added missing hooks
+import React, { useState, useRef,useEffect } from "react";  // ✅ Added missing hooks
 import { useNavigate } from "react-router-dom";
 import "./LandingPage.css";
 import "./MainPage.css";  // ✅ Added for mode cards CSS
 
 export default function LandingPage() {
+  
   const navigate = useNavigate();
-
+ useEffect(() => {
+    document.title = 'EcoTravel | Landing Page';
+  }, []);
   // ✅ FIXED: Add missing state
   const [selectedMode, setSelectedMode] = useState(null);
 

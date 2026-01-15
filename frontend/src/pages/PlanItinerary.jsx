@@ -49,6 +49,9 @@ const getEcoClass = (mode) => {
 };
 
 export default function PlanItinerary() {
+  useEffect(() => {
+    document.title = 'EcoTravel | Plan Itinerary';
+  }, []);
   const navigate = useNavigate();
 const [activeSection, setActiveSection] = useState('home');
   const homeRef = useRef(null);

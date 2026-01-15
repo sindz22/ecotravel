@@ -5,6 +5,9 @@ import API_BASE_URL from "../config";
 
 
 export default function Login() {
+  useEffect(() => {
+      document.title = 'EcoTravel | Login';
+    }, []);
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");

@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Signup.css";
 import API_BASE_URL from "../config";  // ← ADD THIS LINE at top
 
 
 export default function Signup() {
+  useEffect(() => {
+      document.title = 'EcoTravel | Signup';
+    }, []);
   const navigate = useNavigate();
 
     const [form, setForm] = useState({

@@ -5,6 +5,9 @@ import API_BASE_URL from "../config";
 
 
 export default function MyItineraries() {
+  useEffect(() => {
+      document.title = 'EcoTravel | My itineraries';
+    }, []);
   const [itineraries, setItineraries] = useState([]);
     const [activeSection, setActiveSection] = useState('home');
 

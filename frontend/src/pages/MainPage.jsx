@@ -6,6 +6,9 @@ import API_BASE_URL from "../config";
 
 
 export default function MainPage() {
+  useEffect(() => {
+      document.title = 'EcoTravel | Dashboard';
+    }, []);
   const navigate = useNavigate();
 
   const [location, setLocation] = useState("");
